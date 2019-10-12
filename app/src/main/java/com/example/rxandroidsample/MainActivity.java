@@ -3,6 +3,16 @@ package com.example.rxandroidsample;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
+
+import com.jakewharton.rxbinding3.view.RxView;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import kotlin.Unit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,5 +20,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RxView.clicks(findViewById(R.id.btn))
+                .map(new Function<Object, Object>() {
+                    @Override
+                    public Object apply(Object o) throws Exception {
+                        return "clicked";
+                    }
+                })
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object emit) throws Exception {
+                        Toast.makeText(MainActivity.this,
+                                emit.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
+
+
 }
